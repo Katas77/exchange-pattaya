@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  liquibase:
+    enabled: true
+    drop-first: true
+    default-schema: public
+    change-log: classpath:db/changelog_init.xml
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/app_db2
+    username: roma
+    password: roma
+    hikari:
+      schema: app_schema2
+      connection-init-sql: create schema if not exists app_schema2
+      connection-timeout: 10000
+  jpa:
+    generate-ddl: true
+    hibernate.generate-ddl: none
+
+
+
+cbr:
+  currency:
+    xml:
+      url: http://www.cbr.ru/scripts/XML_daily.asp
