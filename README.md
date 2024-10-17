@@ -62,7 +62,7 @@ curl --request GET \
   --url http://localhost:8080/api/currency/1333
 ```
 
-Конвертация валюты по числовому коду
+Получение Валюты  по числовому коду
 
 ```bash
 OkHttpClient client = new OkHttpClient().newBuilder()
