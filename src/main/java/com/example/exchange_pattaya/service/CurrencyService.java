@@ -30,36 +30,39 @@ public class CurrencyService {
         return mapper.convertToDto(currency);
     }
 
-    public Double convertValue(Long value, Long numCode) {
+    public Double convertValue(Long currencyCode) {
         log.info("CurrencyService method convertValue executed");
-        Currency currency = repository.findByIsoNumCode(numCode);
-        return value * currency.getValue();
+        Currency currency = repository.findByIsoNumCode(currencyCode);
+        return currency.getValue();
     }
 
     public CurrencyDto create(CurrencyDto dto) {
         log.info("CurrencyService method create executed");
-        return  mapper.convertToDto(repository.save(mapper.convertToEntity(dto)));
+        return mapper.convertToDto(repository.save(mapper.convertToEntity(dto)));
     }
-    public CurrencyDtoList findAll()  {
+
+    public CurrencyDtoList findAll() {
         return mapper.responseList(repository.findAll());
     }
+
     public void updateCurrency() throws CbrException {
-        Currency USD=repository.findById(1333L).orElseThrow();
+        Currency USD = repository.findById(1333L).orElseThrow();
         USD.setValue(exchangeService.getUSDExchangeRate());
         repository.save(USD);
-        Currency EUR=repository.findById(2333L).orElseThrow();
+        Currency EUR = repository.findById(2333L).orElseThrow();
         EUR.setValue(exchangeService.getEURExchangeRate());
         repository.save(EUR);
-        Currency CNY=repository.findById(3333L).orElseThrow();
+        Currency CNY = repository.findById(3333L).orElseThrow();
         CNY.setValue(exchangeService.getCNYExchangeRate());
         repository.save(CNY);
-        Currency GBP=repository.findById(4333L).orElseThrow();
+        Currency GBP = repository.findById(4333L).orElseThrow();
         GBP.setValue(exchangeService.getGBPExchangeRate());
         repository.save(GBP);
-        Currency GEL =repository.findById(5333L).orElseThrow();
+        Currency GEL = repository.findById(5333L).orElseThrow();
         GEL.setValue(exchangeService.getGELExchangeRate());
         repository.save(GEL);
     }
+
     @PostConstruct
     private void updateCurrencyTimer() {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -71,5 +74,4 @@ public class CurrencyService {
             }
         }, 0, 1, TimeUnit.HOURS);
     }
-
 }

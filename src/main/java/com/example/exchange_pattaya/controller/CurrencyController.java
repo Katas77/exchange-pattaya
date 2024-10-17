@@ -22,22 +22,21 @@ public class CurrencyController {
 
     @GetMapping()
     public ResponseEntity<CurrencyDtoList> findAll() {
-
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    ResponseEntity<CurrencyDto> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<CurrencyDto> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @GetMapping(value = "/convert")
-    ResponseEntity<Double> convertValue(@RequestParam("value") Long value, @RequestParam("numCode") Long numCode) {
-        return ResponseEntity.ok(service.convertValue(value, numCode));
+    public ResponseEntity<Double> convertValue(@RequestParam("currencyCode") Long currencyCode) {
+        return ResponseEntity.ok(service.convertValue(currencyCode));
     }
 
     @PostMapping("/create")
-    ResponseEntity<CurrencyDto> create(@RequestBody CurrencyDto dto) {
+    public ResponseEntity<CurrencyDto> create(@RequestBody CurrencyDto dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 }

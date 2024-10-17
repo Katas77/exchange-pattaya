@@ -1,4 +1,4 @@
-# Проверь курс валюты перед отпуском
+# Проверь курс валюты перед отпуском!
 ![image](./image/3.jpg )
 # Сервис Обмен валюты
 ## Используемые технологии
@@ -41,18 +41,18 @@ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres -d postgre
 
 ### Запросы API
 
-Создание новой записи о валюте
+Получить информацию о курсах валютах
 
 ```bash
-curl --request POST \
-  --url http://localhost:8080/api/currency/create \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "name": "Доллар Готэм-Сити",
-  "nominal": 3,
-  "value": 32.2,
-  "isoNumCode": 1337
-}'
+OkHttpClient client = new OkHttpClient().newBuilder()
+  .build();
+MediaType mediaType = MediaType.parse("text/plain");
+RequestBody body = RequestBody.create(mediaType, "");
+Request request = new Request.Builder()
+  .url("http://localhost:8080/api/currency")
+  .method("GET", body)
+  .build();
+Response response = client.newCall(request).execute();
 ```
 
 Получение Валюты по id
@@ -65,8 +65,15 @@ curl --request GET \
 Конвертация валюты по числовому коду
 
 ```bash
-curl --request GET \
---url http://localhost:8080/api/currency/convert?value=100&numCode=840
+OkHttpClient client = new OkHttpClient().newBuilder()
+  .build();
+MediaType mediaType = MediaType.parse("text/plain");
+RequestBody body = RequestBody.create(mediaType, "");
+Request request = new Request.Builder()
+  .url("http://localhost:8080/api/currency/convert?currencyCode=840")
+  .method("GET", body)
+  .build();
+Response response = client.newCall(request).execute();
 ```
 
 
