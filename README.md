@@ -41,7 +41,7 @@ docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres -d postgre
 
 ### Запросы API
 
-Получить информацию о курсах валютах
+Получить информацию о курсах валют
 
 ```bash
 OkHttpClient client = new OkHttpClient().newBuilder()

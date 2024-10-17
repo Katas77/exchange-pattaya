@@ -1,6 +1,5 @@
 package com.example.exchange_pattaya.getexchangerate;
 
-
 import com.example.exchange_pattaya.exception.CbrException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import java.io.StringReader;
 @Component
 public class ExchangeRateService {
 
-    private static final String USD_XPATH = "/ValCurs//Valute[@ID='R01235']/Value";
+    private static final String USD_XPATH = "/ValCurs//Valute[@ID='R01235']/Value";// "//tag[@attribute='value']/targetTag"
     private static final String EUR_XPATH = "/ValCurs//Valute[@ID='R01239']/Value";
     private static final String CNY_XPATH = "/ValCurs//Valute[@ID='R01375']/Value";
     private static final String GBP_XPATH = "/ValCurs//Valute[@ID='R01035']/Value";
@@ -70,7 +69,6 @@ public class ExchangeRateService {
         String nominalStr = extractCurrencyValueFromXML(xml, GEL_XPATH).replaceAll(",", ".");
         return Double.valueOf((nominalStr));
     }
-
 
 
     private static String extractCurrencyValueFromXML(String xml, String xpathExpression)
