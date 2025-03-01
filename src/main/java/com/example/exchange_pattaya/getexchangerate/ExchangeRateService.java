@@ -14,7 +14,7 @@ import java.io.StringReader;
 @Component
 public class ExchangeRateService {
 
-    private static final String USD_XPATH = "/ValCurs//Valute[@ID='R01235']/Value";// "//tag[@attribute='value']/targetTag"
+    private static final String USD_XPATH = "/ValCurs//Valute[@ID='R01235']/Value";
     private static final String EUR_XPATH = "/ValCurs//Valute[@ID='R01239']/Value";
     private static final String CNY_XPATH = "/ValCurs//Valute[@ID='R01375']/Value";
     private static final String GBP_XPATH = "/ValCurs//Valute[@ID='R01035']/Value";
@@ -23,62 +23,41 @@ public class ExchangeRateService {
     @Autowired
     private CbrClient client;
 
-
     public Double getUSDExchangeRate() throws CbrException {
-        var xmlOptional = client.getXML();
-        String xml = xmlOptional.orElseThrow(
-                () -> new CbrException("Не удалось получить XML")
-        );
-        String nominalStr = extractCurrencyValueFromXML(xml, USD_XPATH).replaceAll(",", ".");
-        return Double.valueOf((nominalStr));
+        return getExchangeRate(USD_XPATH);
     }
 
-
     public Double getEURExchangeRate() throws CbrException {
-        var xmlOptional = client.getXML();
-        String xml = xmlOptional.orElseThrow(
-                () -> new CbrException("Не удалось получить XML")
-        );
-        String nominalStr = extractCurrencyValueFromXML(xml, EUR_XPATH).replaceAll(",", ".");
-        return Double.valueOf((nominalStr));
+        return getExchangeRate(EUR_XPATH);
     }
 
     public Double getCNYExchangeRate() throws CbrException {
-        var xmlOptional = client.getXML();
-        String xml = xmlOptional.orElseThrow(
-                () -> new CbrException("Не удалось получить XML")
-        );
-        String nominalStr = extractCurrencyValueFromXML(xml, CNY_XPATH).replaceAll(",", ".");
-        return Double.valueOf((nominalStr));
+        return getExchangeRate(CNY_XPATH);
     }
 
     public Double getGBPExchangeRate() throws CbrException {
-        var xmlOptional = client.getXML();
-        String xml = xmlOptional.orElseThrow(
-                () -> new CbrException("Не удалось получить XML")
-        );
-        String nominalStr = extractCurrencyValueFromXML(xml, GBP_XPATH).replaceAll(",", ".");
-        return Double.valueOf((nominalStr));
+        return getExchangeRate(GBP_XPATH);
     }
 
     public Double getGELExchangeRate() throws CbrException {
-        var xmlOptional = client.getXML();
-        String xml = xmlOptional.orElseThrow(
-                () -> new CbrException("Не удалось получить XML")
-        );
-        String nominalStr = extractCurrencyValueFromXML(xml, GEL_XPATH).replaceAll(",", ".");
-        return Double.valueOf((nominalStr));
+        return getExchangeRate(GEL_XPATH);
     }
 
+    private Double getExchangeRate(String xpathExpression) throws CbrException {
+        String xml = client.getXML()
+                .orElseThrow(() -> new CbrException("Не удалось получить XML"));
 
-    private static String extractCurrencyValueFromXML(String xml, String xpathExpression)
-            throws CbrException {
-        System.out.println(xml);
+        String nominalStr = extractCurrencyValueFromXML(xml, xpathExpression)
+                .replace(",", ".");
+        return Double.valueOf(nominalStr);
+    }
+
+    private static String extractCurrencyValueFromXML(String xml, String xpathExpression) throws CbrException {
         var source = new InputSource(new StringReader(xml));
+
         try {
             var xpath = XPathFactory.newInstance().newXPath();
             var document = (Document) xpath.evaluate("/", source, XPathConstants.NODE);
-
             return xpath.evaluate(xpathExpression, document);
         } catch (XPathExpressionException e) {
             throw new CbrException("Не удалось распарсить XML", e);

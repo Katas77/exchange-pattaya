@@ -18,7 +18,6 @@ public interface CurrencyMapper {
 
     Currency convertToEntity(CurrencyDto currencyDto);
 
-
     default CurrencyDtoList responseList(List<Currency> currencyList) {
         CurrencyDtoList response = new CurrencyDtoList();
         response.setCurrencies(currencyList.stream().map(this::convertToAllFinDto).collect(Collectors.toList()));
